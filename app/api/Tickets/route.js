@@ -1,4 +1,4 @@
-import Ticket from "../../(models)/Tickets";
+import Ticket from "@/app/(models)/Tickets";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -8,6 +8,16 @@ export async function POST(req) {
     await Ticket.create(ticketData);
 
     return NextResponse.json({ message: "Ticket Created" }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const tickets = await Ticket.find();
+
+    return NextResponse.json({ tickets }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }

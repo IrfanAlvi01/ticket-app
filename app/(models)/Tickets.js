@@ -9,9 +9,10 @@ const ticketSchema = new Schema(
     description: String,
     category: String,
     priority: Number,
-    process: Number,
+    progress: {type:Number, default:"dummyValue"},
     status: String,
     active: Boolean,
+    name: String,
   },
   {
     timestamps: true,

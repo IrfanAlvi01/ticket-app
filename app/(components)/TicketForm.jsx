@@ -26,7 +26,7 @@ const TicketForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitted");
+    console.log("submitted", formData);
 
     const res = await fetch("/api/Tickets", {
       method: "POST",
@@ -132,8 +132,8 @@ const TicketForm = () => {
           id="progress"
           name="progress"
           value={formData.progress}
-          min={0}
-          max={100}
+          min="0"
+          max="100"
           onChange={handleChange}
         />
         <label>Status</label>

@@ -37,17 +37,27 @@ const TicketForm = ({ ticket }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted", formData);
+    if (EDITMODE) {
+      const res = await fetch(`/api/Tickets/${ticket._id}`, {
+        method: "PUT",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
 
-    const res = await fetch("/api/Tickets", {
-      method: "POST",
-      body: JSON.stringify({ formData }),
-      "content-type": "application/json",
-    });
+      if (!res.ok) {
+        throw new Error("Failed to update ticket");
+      }
+    } else {
+      const res = await fetch("/api/Tickets", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
 
-    if (!res.ok) {
-      throw new Error("Failed to post ticket");
+      if (!res.ok) {
+        throw new Error("Failed to post ticket");
+      }
     }
-
     router.refresh();
     router.push("/");
   };
@@ -59,7 +69,7 @@ const TicketForm = ({ ticket }) => {
         method="post"
         onSubmit={handleSubmit}
       >
-        <h3>Create your Ticket</h3>
+        <h3>{EDITMODE ? "Update your ticket" : "Create your Ticket"}</h3>
         <label>Title</label>
         <input
           id="title"
@@ -152,7 +162,11 @@ const TicketForm = ({ ticket }) => {
           <option value="started">Started </option>
           <option value="done">Done </option>
         </select>
-        <input type="submit" className="btn" value="Created Ticket" />
+        <input
+          type="submit"
+          className="btn"
+          value={EDITMODE ? "Update Ticket" : "Create Ticket"}
+        />
       </form>
     </div>
   );
